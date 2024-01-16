@@ -27,4 +27,7 @@ if (NT.initialized ~= true) then
     --"Health Check" values for making sure we're running OK
     NT.HealthCheck = {AsyncLoopLastFrame=-1} --accessing table members when global store is not ready breaks random scripts...
     --NT.HealthCheck.AsyncLoopLastFrame = -1 --aka dont do this, do the above
+
+    NT.frames_elapsed = 0
+    NT.reached_sampo = false
 end

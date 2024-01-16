@@ -256,6 +256,10 @@ function OnPlayerSpawned(player_entity)
         --nt print_error("Adding no_progress flags, option enabled and flags dont exist already")
         SetProgressDisable(true)
     end
+
+    if (GameHasFlagRun("NT_race_mode")) then
+        EntityLoadToEntity("mods/noita-together/files/entities/race_timer.xml", player_entity)
+    end
 end
 
 function OnPausePreUpdate()

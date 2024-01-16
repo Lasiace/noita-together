@@ -146,6 +146,7 @@ export default new Vuex.Store({
                 { id: "NT_send_items", name: "Send Items", tooltip: "Allow players to deposit/take items.", type: "boolean", value: true },
                 { id: "NT_world_randomize_loot", name: "Randomize loot", tooltip: "Only applies when playing on the same seed, makes it so everyone gets different loot.", type: "boolean", value: true },
                 { id: "NT_sync_world_seed", name: "Sync Seed", tooltip: "All players play in the same world seed (requires everyone to start a new game) 0 means random seed.", type: "number", value: 0 },
+                { id: "NT_race_mode", name: "Race Mode", tooltip: "Introduces a timer that pauses while waiting for the boss, allowing players to race to the end.", type: "boolean", value: false},
                 { id: "NT_death_penalty_end", name: "End run", tooltip: "Run ends for all players when someone dies.", type: "boolean", value: true },
                 { id: "NT_death_penalty_weak_respawn", name: "Respawn Penalty", tooltip: "Player respawns and everyone takes a % drop on their max hp, once it goes below certain threshold on the weakest player the run ends for everyone.", type: "boolean", value: true },
                 { id: "NT_death_penalty_full_respawn", name: "Respawn", tooltip: "Player will respawn on their last checkpoint and no penalties.", type: "boolean", value: true },

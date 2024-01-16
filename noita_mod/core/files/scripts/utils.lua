@@ -872,3 +872,14 @@ function SkinSwapPlayerGhost(data)
         end
     end
 end
+
+function GetDistanceToSampo(x, y)
+    local sx, sy = 3545, 13110 -- sampo coordinates in a normal run
+    local dx = sx - x
+    local dy = sy - y
+    return math.sqrt(dx*dx + dy*dy)
+end
+
+function IsNearSampo(x, y, distance)
+    return GetDistanceToSampo(x, y) < distance
+end
