@@ -65,6 +65,10 @@ function UpdatePlayerStats()
         changes = changes + 1
     end
     payload.location = location
+    if (GameHasFlagRun("NT_race_mode")) then
+        payload.dist = GetDistanceToSampo(player.pos_x, player.pos_y)
+        payload.framesElapsed = NT.frames_elapsed
+    end
     if (changes > 0) then
         SendWsEvent({event="PlayerUpdate", payload=payload})
     end

@@ -166,6 +166,8 @@ wsEvents = {
             location = "Mountain",
             sampo = false,
             inven = {},
+            dist = 0,
+            framesElapsed = 0,
             --cached entity ID for player ghost - check before any use!
             ghostEntityId = 0,
             --player cosmetic (crown,amulet,?) tracking
@@ -230,7 +232,9 @@ wsEvents = {
                 y = 0,
                 speed = 1,
                 location = "Mountain",
-                inven = {}
+                inven = {},
+                dist = 0,
+                framesElapsed = 0,
             }
         end
     end,
