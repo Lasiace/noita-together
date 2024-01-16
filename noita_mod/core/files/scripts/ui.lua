@@ -843,6 +843,63 @@ if not initialized then
         GuiText(gui, pos_x + 68 , pos_y + offy + 2, "$noitatogether_message_send")
     end
 
+    function draw_player_timer(index, player)
+        GuiZSetForNextWidget(gui, 10)
+
+        GuiText(gui, 0, 0, string.format("%d: %s", index, player["name"]))
+        GuiText(gui, 0, 0, string.format("[%dm] %s", player["dist"] / 10, FramesToTimer(player["frames_elapsed"])))
+    end
+
+    function draw_race_timers(players)
+        GuiZSetForNextWidget(gui, 10)
+        GuiBeginScrollContainer(gui, next_id(), screen_width - 65, screen_height - 105, 55, 22, false, 1, 1)
+        GuiLayoutBeginVertical(gui, 0, 0)
+
+        local player_info = {}
+        if (NT ~= nil and NT.frames_elapsed ~= nil) then
+            local x, y = GetPlayerPos()
+            if x == nil then x = 0 end
+            if y == nil then y = 0 end
+            player_info = {{name = "You", frames_elapsed = NT.frames_elapsed, dist = GetDistanceToSampo(x, y)}}
+            GuiText(gui, 0, 0, string.format("%dm", GetDistanceToSampo(x, y) / 10))
+            GuiText(gui, 0, 0, FramesToTimer(NT.frames_elapsed))
+        end
+
+        GuiLayoutEnd(gui)
+        GuiEndScrollContainer(gui)
+        
+        GuiZSetForNextWidget(gui, 8)
+        GuiBeginScrollContainer(gui, next_id(), screen_width - 110, screen_height - 75, 100, 65, false, 1, 1)
+        GuiLayoutBeginVertical(gui, 0, 0)
+        
+        for i, p in ipairs(players) do
+            if p ~= nil then
+                table.insert(player_info, {name = p.name, frames_elapsed = p.framesElapsed, dist = p.dist})
+            end
+        end
+
+        local sorted_players = table.sort(player_info, function(a, b)
+            if (a["frames_elapsed"] ~= b["frames_elapsed"]) then
+                return a["frames_elapsed"] < b["frames_elapsed"]
+            end
+            return a["dist"] < b["dist"]
+        end)
+
+        if (player_info ~= nil) then
+            for i, p in ipairs(player_info) do
+                if (i > 3) then
+                    break
+                end
+                if (p ~= nil) then
+                    draw_player_timer(i, p)
+                end
+            end
+        end
+
+        GuiLayoutEnd(gui)
+        GuiEndScrollContainer(gui)
+    end
+
     function draw_gui()
         --local frame = GameGetFrameNum()
         reset_id()
@@ -970,6 +1027,10 @@ if not initialized then
             --clear textbox hovering flags - in case hovering while bank view closed
             is_hovering_bank_filter = false
             is_hovering_bank_gold = false
+        end
+
+        if (GameHasFlagRun("NT_race_mode")) then
+            draw_race_timers(PlayerList)
         end
 
         --check if we are currently hovering any textinputs and lock/unlock player controls as needed

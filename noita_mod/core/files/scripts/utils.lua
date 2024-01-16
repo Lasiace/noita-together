@@ -887,3 +887,10 @@ end
 function IsNearSampo(x, y, distance)
     return GetDistanceToSampo(x, y) < distance
 end
+
+function FramesToTimer(frames)
+    local minutes = math.floor(frames/3600)
+    local seconds = math.floor(frames/60 % 60)
+    local milliseconds = math.floor(frames*1000/60 % 1000)
+    return string.format("%02d:%02d:%04d", minutes, seconds, milliseconds)
+end
