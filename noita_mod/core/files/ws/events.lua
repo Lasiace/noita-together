@@ -204,7 +204,11 @@ wsEvents = {
         if (data.isWin == true) then
             PlayerList[data.userId].curHp = 0
             --InGameChatAddMsg({name = "[System]", message = msg})
-            GamePrintImportant(GameTextGet("$noitatogether_player_won", PlayerList[data.userId].name), "")
+            if (GameHasFlagRun("NT_race_mode")) then
+                GamePrintImportant(GameTextGet("$noitatogether_player_race_won", PlayerList[data.userId].name, FramesToTimer(PlayerList[data.userId].framesElapsed)), "")
+            else
+                GamePrintImportant(GameTextGet("$noitatogether_player_won", PlayerList[data.userId].name), "")
+            end
         else
             PlayerList[data.userId].curHp = 0
             --msg = PlayerList[data.userId].name .. " has died." --changed the text of this, so just commenting out for now..

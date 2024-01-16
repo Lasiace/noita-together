@@ -408,9 +408,21 @@ class NoitaGame extends EventEmitter {
     sPlayerDeath(payload) {
         const player = payload.userId == this.user.userId ? this.user : this.players[payload.userId]
         if (player) {
-            sysMsg(`${player.name} has ${payload.isWin ? "won" : "died"}.`)
-            if (this.isHost && this.onDeathKick && !payload.isWin && this.user.userId != payload.userId) {
-                this.emit("death_kick", payload.userId)
+            if (this.gameFlags.includes("NT_race_mode")) {
+                if (payload.isWin) {
+                    const minutes = Math.floor(player.framesElapsed/3600)
+                    const seconds = Math.floor(player.framesElapsed/60 % 60)
+                    const milliseconds = Math.floor(player.framesElapsed*1000/60 % 1000)
+                    const time = String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0') + ':' + String(milliseconds).padStart(4, '0')
+                    sysMsg(`${player.name} has won with a time of ${time}.`)
+                } else {
+                    sysMsg(`${player.name} has died.`)
+                }
+            } else {
+                sysMsg(`${player.name} has ${payload.isWin ? "won" : "died"}.`)
+                if (this.isHost && this.onDeathKick && !payload.isWin && this.user.userId != payload.userId) {
+                    this.emit("death_kick", payload.userId)
+                }
             }
         }
         if (payload.userId == this.user.userId) { return }
