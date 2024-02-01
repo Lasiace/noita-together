@@ -1,6 +1,4 @@
---include in utils.lua by dofile_once :)
-
-local NT_SAMPO_UNLOCK_DIST = 200
+dofile_once("mods/noita-together/files/scripts/utils.lua")
 
 function CoopBossFightStart(data)
     --print_error("CoopBossFightStart")
@@ -205,33 +203,4 @@ function CoopBossFightTick()
         end
         
     end
-end
-
-function GetPlayersNearSampo(disabled_sampo, distance)
-    local sx,sy = EntityGetTransform(disabled_sampo)
-    local players_near_sampo = 0
-    local players_not_near_sampo = 0
-
-    --check ourselves first :)
-    local px, py = EntityGetTransform(GetPlayer())
-    dist_squared = (sx - px)^2 + (sy - py)^2
-
-    if dist_squared < (distance)^2 then
-        players_near_sampo = players_near_sampo + 1
-    else
-        players_not_near_sampo = players_not_near_sampo + 1
-    end
-
-    --check other players now
-    for userId, entry in pairs(PlayerList) do
-        dist_squared = (sx - entry.x)^2 + (sy - entry.y)^2
-
-        if dist_squared < (distance)^2 then
-            players_near_sampo = players_near_sampo + 1
-        else
-            players_not_near_sampo = players_not_near_sampo + 1
-        end
-    end
-
-    return players_near_sampo,players_not_near_sampo
 end

@@ -860,8 +860,8 @@ if not initialized then
             local x, y = GetPlayerPos()
             if x == nil then x = 0 end
             if y == nil then y = 0 end
-            player_info = {{name = "You", frames_elapsed = NT.frames_elapsed, dist = GetDistanceToSampo(x, y)}}
-            GuiText(gui, 0, 0, string.format("%dm", GetDistanceToSampo(x, y) / 10))
+            player_info = {{name = "You", frames_elapsed = NT.frames_elapsed, dist = GetDistanceFromSpawn(x, y)}}
+            GuiText(gui, 0, 0, string.format("%dm", GetDistanceFromSpawn(x, y) / 10))
             GuiText(gui, 0, 0, FramesToTimer(NT.frames_elapsed))
         end
 
@@ -882,7 +882,7 @@ if not initialized then
             if (a["frames_elapsed"] ~= b["frames_elapsed"]) then
                 return a["frames_elapsed"] < b["frames_elapsed"]
             end
-            return a["dist"] < b["dist"]
+            return a["dist"] > b["dist"]
         end)
 
         if (player_info ~= nil) then

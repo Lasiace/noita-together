@@ -9,6 +9,8 @@ end
 dofile("mods/noita-together/files/scripts/util/player_ghosts.lua") --TODO make this a dofile_once ???
 dofile_once("mods/noita-together/files/scripts/util/coop_boss_fight.lua")
 
+local NT_SAMPO_UNLOCK_DIST = 200
+
 function GetPlayer()
     local player = EntityGetWithTag("player_unit") or nil
     if player ~= nil then
@@ -66,7 +68,7 @@ function UpdatePlayerStats()
     end
     payload.location = location
     if (GameHasFlagRun("NT_race_mode")) then
-        payload.dist = GetDistanceToSampo(player.pos_x, player.pos_y)
+        payload.dist = GetDistanceFromSpawn(player.pos_x, player.pos_y)
         payload.framesElapsed = NT.frames_elapsed
     end
     if (changes > 0) then
@@ -877,15 +879,11 @@ function SkinSwapPlayerGhost(data)
     end
 end
 
-function GetDistanceToSampo(x, y)
-    local sx, sy = 3545, 13110 -- sampo coordinates in a normal run
-    local dx = sx - x
-    local dy = sy - y
+function GetDistanceFromSpawn(x, y)
+    local ox, oy = 0, 0 -- spawn coordinates in a normal run
+    local dx = ox - x
+    local dy = oy - y
     return math.sqrt(dx*dx + dy*dy)
-end
-
-function IsNearSampo(x, y, distance)
-    return GetDistanceToSampo(x, y) < distance
 end
 
 function FramesToTimer(frames)
@@ -893,4 +891,36 @@ function FramesToTimer(frames)
     local seconds = math.floor(frames/60 % 60)
     local milliseconds = math.floor(frames*1000/60 % 1000)
     return string.format("%02d:%02d:%04d", minutes, seconds, milliseconds)
+end
+
+function IsNearSampo(disabled_sampo, x, y, distance_to_check)
+    if disabled_sampo == nil then return false end
+    local sx, sy = EntityGetTransform(disabled_sampo)
+    dist_squared = (sx - x)^2 + (sy - y)^2
+
+    return dist_squared < (distance_to_check)^2
+end
+
+function GetPlayersNearSampo(disabled_sampo, distance)
+    local players_near_sampo = 0
+    local players_not_near_sampo = 0
+
+    --check ourselves first :)
+    local px, py = EntityGetTransform(GetPlayer())
+    if IsNearSampo(disabled_sampo, px, py, distance) then
+        players_near_sampo = players_near_sampo + 1
+    else
+        players_not_near_sampo = players_not_near_sampo + 1
+    end
+
+    --check other players now
+    for userId, entry in pairs(PlayerList) do
+        if IsNearSampo(disabled_sampo, entry.x, entry.y, distance) then
+            players_near_sampo = players_near_sampo + 1
+        else
+            players_not_near_sampo = players_not_near_sampo + 1
+        end
+    end
+
+    return players_near_sampo, players_not_near_sampo
 end

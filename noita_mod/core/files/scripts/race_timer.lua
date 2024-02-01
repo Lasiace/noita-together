@@ -4,9 +4,14 @@ dofile_once("mods/noita-together/files/scripts/utils.lua")
 local entity_id = GetUpdatedEntityID()
 
 if not NT.reached_sampo then
-    local px, py = EntityGetTransform(entity_id)
-    if IsNearSampo(px, py, 200) then -- should use the same constant as in coop_boss_fight.lua
-        NT.reached_sampo = true
+    local entities = EntityGetWithTag("disabled_sampo")
+    --sampo doesnt exist or not spawned yet? nothing to do then
+    if #entities >= 1 and entities[1] then
+        local px, py = EntityGetTransform(GetPlayer())
+        local is_near_sampo = IsNearSampo(entities[1], px, py, NT_SAMPO_UNLOCK_DIST)
+        if is_near_sampo then
+            NT.reached_sampo = true
+        end
     end
 end
 
