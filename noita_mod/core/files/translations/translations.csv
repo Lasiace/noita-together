@@ -64,7 +64,6 @@ noitatogether_player_got_mcguffin_orbs,$0 picked up $1 ($2),,,,,,,,,,,,message w
 noitatogether_player_got_mcguffin_waiting,$0 picked up $1; They wait for you...,,,,,,,,,,,,message when a player picks up the salt/sampo/mcguffin when you havent yet,
 noitatogether_player_got_mcguffin_waiting_orbs,$0 picked up $1 ($2); They wait for you...,,,,,,,,,,,,message when a player picks up the 13+ sampo with exact orb count when you havent yet,
 noitatogether_player_won,$0 has won,,,,,,,,,,,,message when player completed the game,
-noitatogether_player_race_won,$0 has won ($1),,,,,,,,,,,,message when player completed the game during race mode,
 noitatogether_hourglass_gave_boon,Your team receives a boon,,,,,,,,,,,,title of message when sending an hourglass effect,
 noitatogether_hourglass_boost_title,$0 boosted the team,,,,,,,,,,,,title of message when a generic buff is sent by hourglass,
 noitatogether_hourglass_boon_title,$0 sent you a boon,,,,,,,,,,,,title of message when a heal is sent by hourglass,
