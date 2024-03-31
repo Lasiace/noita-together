@@ -440,9 +440,7 @@ export default new Vuex.Store({
     },
     mutations: {
         setSavedUserName: (state, value) => {
-            if (value) {
-                state.savedUser = true
-            }
+            state.savedUser = !!value
             state.savedUserName = value
         },
         setLoading: (state, value) => {
@@ -616,6 +614,16 @@ export default new Vuex.Store({
                     canClose: true
                 })
                 commit("setLoading", false)
+            })
+        },
+        deleteSavedUser: ({ state, dispatch }) => {
+            ipcRenderer.send("DELETE_USER", state.savedUserName)
+            ipcRenderer.once("DELETE_USER_FAILED", () => {
+                dispatch("errDialog", {
+                    title: "Failed to delete saved user",
+                    body: "Restart the app and try again.",
+                    canClose: true
+                })
             })
         },
         errDialog: ({ commit }, payload) => {
